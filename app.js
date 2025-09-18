@@ -107,13 +107,16 @@ app.use((req,res,next)=>{
 
 
 
-app.get("/", (req, res) => {
-  res.send("Hello, your app is working!");
-});
+
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+
+app.get("/", (req, res) => {
+  res.send("home");   
+});
+
 
 app.all("/:id",(req,res,next)=>{
     next(new ExpressError(404,"page not found"));
@@ -123,6 +126,7 @@ let {statuscode = 500 , message="something went wrong"} = err;
 res.status(statuscode).render("error.ejs", {message});
 });
 
-app.listen(8080 ,()=>{
-    console.log("server is listening to port : 8080");
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`✅ Server is running on port: ${port}`);
 });
